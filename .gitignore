@@ -1,0 +1,37 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.local
+
+# Reports and generated artifacts (keep dir via .gitkeep)
+data/reports/*.jsonl
+data/reports/*.json
+data/reports/*.md
+data/reports/*.log
+!data/reports/.gitkeep
+
+# Tooling caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store

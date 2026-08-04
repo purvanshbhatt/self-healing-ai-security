@@ -1,0 +1,25 @@
+# data/prompts/injection_patterns.yaml
+# Signatures used by patch.prompt_patch.strategies.detect_injection.
+# Each entry is a labelled regex matched (case-insensitive) against the
+# incoming user message. Edit freely — no code changes required.
+
+patterns:
+  - name: "ignore_previous_instructions"
+    regex: "ignore (all |any |the )?(previous|prior|above) (instructions?|prompts?)"
+
+  - name: "reveal_system_prompt"
+    regex: "(reveal|show|print|repeat|output) (your |the )?(system|initial) (prompt|message|instructions?)"
+
+  - name: "pretend_mode_override"
+    regex: "pretend (you are|to be)|act as (if you are )?an? .* (with no|without) (restrictions?|rules?|policy)"
+
+  - name: "dan_style_jailbreak"
+    regex: "DAN|do anything now"
+
+  - name: "encoded_instruction_b64"
+    # Catches prompt-injection payloads base64-encoded into the message.
+    # We flag long runs of standard base64 alphabet characters as suspicious.
+    regex: "[A-Za-z0-9+/]{60,}={0,2}"
+
+  - name: "role_play_bypass"
+    regex: "(let'?s play a game|in this hypothetical|for research purposes only)"

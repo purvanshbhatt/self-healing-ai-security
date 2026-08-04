@@ -1,0 +1,32 @@
+# data/prompts/policy_keywords.yaml
+# Keyword lists per policy category — matched (case-insensitive, word-boundary)
+# against the model output by patch.output_patch.strategies.policy_filter.
+# Keep each category explicit; the config selects which categories to enforce.
+
+pii:
+  - "social security number"
+  - "credit card number"
+  - " passport number"
+  - "date of birth"
+  - "home address"
+  - "mother'?s maiden name"
+
+self_harm:
+  - "suicide"
+  - "self[- ]harm"
+  - "cut myself"
+  - "ending my life"
+  - "how to (hang|overdose|poison) myself"
+
+harmful_code:
+  - "exploit code"
+  - "ransomware"
+  - "sql injection script"
+  - "buffer overflow exploit"
+  - "reverse shell"
+  - "malware payload"
+
+hate_speech:
+  - "racial slur"
+  - "(kill|exterminate|deport) all .*(people|race|religion)"
+  - "(subhuman|inferior race)"
