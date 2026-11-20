@@ -212,21 +212,19 @@ class GarakRunner:
     # ------------------------------------------------------------------
 
     def _build_argv(self, *, prefix: str) -> tuple[str, ...]:
-        """Translate :class:`GarakConfig` into the modern garak CLI argv.
+        """Translate :class:`GarakConfig` into the garak 0.9.0.13 CLI argv.
 
         Returns a tuple (not a list) for hashability in logs and tests.
         """
         cfg = self._config.probe.garak
         target_model = self._config.target.model
 
-        spec_value = ",".join(
-            f"{_PROBE_NS}{p}" for p in cfg.probe_spec
-        )
+        probes_value = ",".join(cfg.probe_spec)
         argv: list[str] = [
             cfg.executable,
-            "--target_type", "openai",
-            "--target_name", target_model,
-            "--spec", spec_value,
+            "--model_type", "openai",
+            "--model_name", target_model,
+            "--probes", probes_value,
             "--generations", str(cfg.generations),
             "--seed", str(cfg.seed),
             "--report_prefix", prefix,
@@ -235,10 +233,12 @@ class GarakRunner:
         return tuple(argv)
 
     def _build_env(self) -> dict[str, str]:
-        """Env for the garak subprocess: carries its own OPENAI_BASE_URL."""
+        """Env for the garak subprocess: carries its own OPENAI_BASE_URL and UTF-8 flags."""
         env = os.environ.copy()
         env["OPENAI_BASE_URL"] = self._proxy_base_url
         env["OPENAI_API_KEY"] = _PROXY_SENTINEL_KEY
+        env["PYTHONIOENCODING"] = "utf-8"
+        env["PYTHONUTF8"] = "1"
         return env
 
     def _find_report(self, out_dir: Path, *, prefix: str) -> Path:

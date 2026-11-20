@@ -33,6 +33,9 @@ import sys
 from pathlib import Path
 from typing import Final
 
+import os
+from dotenv import load_dotenv
+
 # Make the ``healer`` package importable when this script is run directly
 # (``python scripts/run_experiment.py``) — there is no install-on-the-fly
 # here, the user is expected to run from a project with ``src/`` on path or
@@ -41,6 +44,17 @@ _REPO_ROOT: Final[Path] = Path(__file__).resolve().parents[1]
 _SRC: Final[Path] = _REPO_ROOT / "src"
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
+
+# Load .env file variables into environment
+load_dotenv(_REPO_ROOT / ".env")
+
+# Ensure local venv executable directory is in PATH for garak execution
+_VENV_SCRIPTS = _REPO_ROOT / ".venv" / "Scripts"
+_VENV_BIN = _REPO_ROOT / ".venv" / "bin"
+if _VENV_SCRIPTS.is_dir() and str(_VENV_SCRIPTS) not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = f"{_VENV_SCRIPTS}{os.pathsep}{os.environ.get('PATH', '')}"
+elif _VENV_BIN.is_dir() and str(_VENV_BIN) not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = f"{_VENV_BIN}{os.pathsep}{os.environ.get('PATH', '')}"
 
 from healer.config import DEFAULT_CONFIG_PATH, HealerConfig  # noqa: E402
 from healer.logging_setup import configure_logging  # noqa: E402

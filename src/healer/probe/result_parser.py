@@ -250,7 +250,7 @@ def _parse_eval_row(
     probe = record.get("probe")
     detector = record.get("detector")
     passed = record.get("passed")
-    total = record.get("total_evaluated")
+    total = record.get("total") if "total" in record else record.get("total_evaluated")
     if not isinstance(probe, str) or not probe:
         _LOG.warning(
             "%s:%d eval row missing/invalid 'probe' field; skipping",
